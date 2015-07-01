@@ -8,4 +8,4 @@ this is a quick solution for it,
 make sure you're running the script in the same directory you want compile the .asm 
 
 **quick use**
-./nasm_link.py <my_asm_file.asm>
+*./nasm_link.py my_asm_file.asm*
