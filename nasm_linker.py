@@ -13,10 +13,8 @@ def usage():
 
 def main():
 	global file
-	global nasm
 	global classname
 	global file_output_o
-	global gcc
 	if(len(sys.argv)<=1):
 		usage()
 
