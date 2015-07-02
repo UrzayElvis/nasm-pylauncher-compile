@@ -17,7 +17,7 @@ def catch():
 	print '\033[91m'+"E: linker couldn't perform the compilation and execution [Errors], Exiting..."
 	sys.exit(0)
 def run_file(file):
-	run = raw_input("Execute file (n/y)")
+	run = raw_input("Execute file (n/y) ")
 	if run=='n':
 		pass
 	else:
