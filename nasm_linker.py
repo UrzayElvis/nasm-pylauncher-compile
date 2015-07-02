@@ -18,8 +18,11 @@ def catch():
 	sys.exit(0)
 def run_file(file,run_on_startup=False):
 	if run_on_startup:
-		subprocess.call("./"+file)
-		sys.exit(0)
+		try:
+			subprocess.call("./"+file)
+		except:
+			print '\033[91m'+"Couldn't open file"
+			sys.exit(0)
 	else:
 		run = raw_input("Execute file (n/y) ")
 		if run=='n':
@@ -43,7 +46,8 @@ def main():
 		usage()
 	file = sys.argv[1]
 	classname = file.split('.')[0]
-	if(len(sys.argv[2]) and (sys.argv[2]=='--run' or sys.argv[2]=='-r')):
+	if len(sys.argv)>2 and (sys.argv[2]=='--run' or sys.argv[2]=='-r'):
+		#print "debug"
 		run_file(classname,True)
 	file_output_o = classname+'.o'
 	nasm = shlex.split("nasm -f elf "+file)
