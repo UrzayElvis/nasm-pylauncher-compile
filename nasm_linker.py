@@ -1,4 +1,4 @@
-r/bin/env python
+#!/usr/bin/env python
 
 '''
    NSAM linker, made by https://github.com/UrzayElvis ,
