@@ -22,7 +22,7 @@ def run_file(file,run_on_startup=False):
 			subprocess.call("./"+file)
 		except:
 			print '\033[91m'+"Couldn't open file"
-			sys.exit(0)
+                sys.exit(0)
 	else:
 		run = raw_input("Execute file (n/y) ")
 		if run=='n':
