@@ -1,37 +1,49 @@
-#!/usr/bin/env python
+r/bin/env python
 
-import sys,subprocess
+'''
+   NSAM linker, made by https://github.com/UrzayElvis ,
+   for quick access compiling ASM poporses, you can redistribute this program freely, by Python programming
+'''
+
+import sys,subprocess,shlex
 
 file = ''
 file_output_o = ''
-classname = '';
+classname = ''
+nasm = []
+gcc = []
 
+def catch():
+	print '\033[91m'+"E: linker couldn't perform this action [Errors], Exiting..."
+	sys.exit(0)	
 def usage():
 	print "\nNSAM linker, made by https://github.com/UrzayElvis , for quick access compiling ASM poporses, you can redistribute this program freely, by Python programming \n\n"
 	print "Usage: ./nsam_linker.py [file]"
 	sys.exit(0)
-
 def main():
 	global file
 	global classname
 	global file_output_o
+	global nasm
+	global gcc
 	if(len(sys.argv)<=1):
 		usage()
 
 	file = sys.argv[1]
-        classname = file.split('.')[0]
-        file_output_o = classname+'.o'
+	classname = file.split('.')[0]
+	file_output_o = classname+'.o'
+	nasm = shlex.split("nasm -f elf "+file)
+	gcc = shlex.split('ld -m elf_i386 -s -o '+classname+' '+file_output_o)
 	try:
-	        subprocess.call("nasm -f elf "+file,shell=True)
-	        subprocess.call('ld -m elf_i386 -s -o '+classname+' '+file_output_o,shell=True)
-	except:
-		print "E: Elvis linker couldn't perform this action [Errors], Exiting..."
-		sys.exit(0)
-	
-	r = raw_input("Execute (n/y) ")
-	if r == 'n' or r == 'N':
-		pass
-	else:
-		print 
-		subprocess.call('./'+classname)       
+		compile_o = subprocess.Popen(nasm)
+		buffer_stream = compile_o.communicate()[0]
+		if compile_o.returncode<=0:
+			subprocess.Popen(gcc)
+		else:
+			raise ValueError("Compile error")
+	except OSError:
+		catch()
+	except ValueError:
+		catch()
 main()
+exit(0)
