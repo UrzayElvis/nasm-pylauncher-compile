@@ -14,8 +14,14 @@ nasm = []
 gcc = []
 
 def catch():
-	print '\033[91m'+"E: linker couldn't perform this action [Errors], Exiting..."
-	sys.exit(0)	
+	print '\033[91m'+"E: linker couldn't perform the compilation and execution [Errors], Exiting..."
+	sys.exit(0)
+def run_file(file):
+	run = raw_input("Execute file (n/y)")
+	if run=='n':
+		pass
+	else:
+		subprocess.call("./"+file)
 def usage():
 	print "\nNSAM linker, made by https://github.com/UrzayElvis , for quick access compiling ASM poporses, you can redistribute this program freely, by Python programming \n\n"
 	print "Usage: ./nsam_linker.py [file]"
@@ -35,15 +41,19 @@ def main():
 	nasm = shlex.split("nasm -f elf "+file)
 	gcc = shlex.split('ld -m elf_i386 -s -o '+classname+' '+file_output_o)
 	try:
-		compile_o = subprocess.Popen(nasm)
-		buffer_stream = compile_o.communicate()[0]
-		if compile_o.returncode<=0:
-			subprocess.Popen(gcc)
+		compilation = subprocess.Popen(nasm)
+		buffer_stream = compilation.communicate()[0]
+		if compilation.returncode<=0:
+			compilation = subprocess.Popen(gcc)
+			buffer_stream = compilation.communicate()[0]
+			if compilation.returncode<=0:
+				run_file(classname)
+			else:
+				raise ValueError("GCC Compiling error")
 		else:
-			raise ValueError("Compile error")
+			raise ValueError("NSAM Compiling error")
 	except OSError:
 		catch()
 	except ValueError:
 		catch()
 main()
-exit(0)
